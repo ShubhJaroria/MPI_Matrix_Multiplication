@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "mpi.h"
+#include <time.h>
 
 void multiply_serial(float *A, float *B, float *C, int m, int n, int p){ // A is m x n and B is n x p
 	int i, j, k;
@@ -28,6 +29,8 @@ int IsEqual(float *A, float *B, int m, int n){
 
 int main(int argc, char **argv){
 	
+	clock_t t;
+	t = clock();
 	int i, rank, size, tagA = 69, tagB = 6969, tagR=696969;
 	int num_proc = atoi(argv[1]);
 	int n=atoi(argv[2]);
@@ -127,5 +130,8 @@ int main(int argc, char **argv){
 	}
 	//printf("Message from process %d : %.13s\n", rank, message);
 	MPI_Finalize();
+	t = clock() - t;
+	double time_taken = ((double)t)/CLOCKS_PER_SEC *1000;
+	printf("\nTime taken in thread %d: %f milliseconds \n",rank,time_taken) ;
 	return 0;
 } 
